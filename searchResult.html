@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的移动端豆瓣首页</title>
+    <link rel="stylesheet" type="text/css" href="./css/base.css">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <link rel="stylesheet" type="text/css" href="./css/searchResult.css">
+    <script type="text/javascript" src='./js/jquery.js'></script>
+    <script type="text/javascript" src="./js/jquery.cookie.js"></script>
+    <script type="text/javascript" src='./js/modules/search.js'></script>
+    <script type="text/javascript">
+    var pixelRatio = 1 / window.devicePixelRatio;
+    document.write('<meta name="viewport" content="width=device-width,initial-scale=' + pixelRatio + ',minimum-scale=' + pixelRatio + ',maximum-scale=' + pixelRatio + '" />');
+    /*设置html字体大小，作为rem单位的基准*/
+    var html = document.getElementsByTagName('html')[0];
+    var pageWidth = html.getBoundingClientRect().width;
+    html.style.fontSize = pageWidth / 16 + 'px';
+    </script>
+</head>
+
+<body>
+    <div class="header-bar">
+        <h1 class="header-bar-title">豆瓣</h1>
+        <ul class="nav">
+            <li>
+                <a href="#" class="header-bar-movie">电影</a>
+            </li>
+            <li>
+                <a href="#" class="header-bar-books">图书</a>
+            </li>
+            <li>
+                <a href="#" class="header-bar-video">广播</a>
+            </li>
+            <li>
+                <a href="#" class="header-bar-team">小组</a>
+            </li>
+        </ul>
+        <span class="talion"><a href="search.html"></a></span>
+    </div>
+    <form method="get" action="#" id="search_form">
+        <input type="text" name="query" placeholder="搜索 书 / 影 / 音 / 标签" value="">
+        <button class="button-search" id="button-search" href="javascript:void(0);">搜索</button>
+    </form>
+    <div class="searchResult-list">
+    </div>
+</body>
+<script type="text/javascript">
+$(function() {
+    // 根据search页传入的query向后台发起查询请求
+    var searchQuery = $.cookie('searchQuery');
+    var searchInit = new search();
+    searchInit.getSearch(searchQuery);
+    $('#search_form').find('input').val(searchQuery);
+    $.removeCookie('searchQuery', {
+        path: '/'
+    });
+
+
+    // 根据本页面输入内容，向后台发起查询请求 
+    $('.button-search').on('click', function(ev) {
+        ev.preventDefault();
+        $('.searchResult-list').children().remove();
+        var searchQuery = $('#search_form').find('input').val();
+        var searchInit = new search();
+        searchInit.getSearch(searchQuery);
+    });
+
+});
+</script>
+
+</html>
