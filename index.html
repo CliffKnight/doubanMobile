@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>我的移动端豆瓣首页</title>
+    <link rel="stylesheet" type="text/css" href="./css/base.css">
+    <link rel="stylesheet" type="text/css" href="./css/index.css">
+    <script type="text/javascript" src='./js/jquery.js'></script>
+    <script type="text/javascript" src="./js/jquery.cookie.js"></script>
+    <script type="text/javascript" src='./js/modules/activities.js'></script>
+    <script type="text/javascript">
+    var pixelRatio = 1 / window.devicePixelRatio;
+    document.write('<meta name="viewport" content="width=device-width,initial-scale=' + pixelRatio + ',minimum-scale=' + pixelRatio + ',maximum-scale=' + pixelRatio + '" />');
+    /*设置html字体大小，作为rem单位的基准*/
+    var html = document.getElementsByTagName('html')[0];
+    var pageWidth = html.getBoundingClientRect().width;
+    html.style.fontSize = pageWidth / 16 + 'px';
+    </script>
+</head>
+
+<body>
+    <div class="header-bar">
+        <h1 class="header-bar-title"><a href="./index.html">豆瓣</a></h1>
+        <ul class="nav">
+            <li>
+                <a href="./movie.html" class="header-bar-movie">电影</a>
+            </li>
+            <li>
+                <a href="./book.html" class="header-bar-books">图书</a>
+            </li>
+            <li>
+                <a href="#" class="header-bar-video">广播</a>
+            </li>
+            <li>
+                <a href="#" class="header-bar-team">小组</a>
+            </li>
+        </ul>
+        <span class="talion"><a href="search.html"></a></span>
+    </div>
+    <div class="indexload-img">
+        <img src="./img/loading_green.c0f9be0.gif">
+    </div>
+</body>
+<script type="text/javascript">
+$(function() {
+    var init = new activities();
+    init.getEvents();
+
+    // 下拉加载更多内容
+    var loading = false; //全局变量，指定当前是否正在加载服务器端内容
+    $(document).scroll(function() {
+        if ((($(window).scrollTop() + $(window).height()) + 250) >= $(document).height()) {
+            if (loading == false) {
+                loading = true;
+                init.getMore();
+                loading = false;
+            }
+        }
+    });
+    // 内容加载时显示的动态图
+    if (loading == false) {
+        $('.indexload-img').show();
+    } else {
+        $('.indexload-img').hide();
+    }
+})
+</script>
+
+</html>
